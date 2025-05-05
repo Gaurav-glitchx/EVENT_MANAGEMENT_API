@@ -32,7 +32,10 @@ export class Location extends Document {
   @Prop()
   capacity: number;
 
-  @ApiProperty({ description: 'Location description', example: 'Modern conference center with state-of-the-art facilities' })
+  @ApiProperty({
+    description: 'Location description',
+    example: 'Modern conference center with state-of-the-art facilities',
+  })
   @Prop()
   description: string;
 
@@ -41,4 +44,4 @@ export class Location extends Document {
   isActive: boolean;
 }
 
-export const LocationSchema = SchemaFactory.createForClass(Location); 
+export const LocationSchema = SchemaFactory.createForClass(Location);

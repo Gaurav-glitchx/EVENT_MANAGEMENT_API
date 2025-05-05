@@ -12,12 +12,18 @@ export class EmailService {
   private escapeHtml(unsafe: string): string {
     return unsafe.replace(/[&<>"']/g, (match) => {
       switch (match) {
-        case '&': return '&amp;';
-        case '<': return '&lt;';
-        case '>': return '&gt;';
-        case '"': return '&quot;';
-        case "'": return '&#39;';
-        default: return match;
+        case '&':
+          return '&amp;';
+        case '<':
+          return '&lt;';
+        case '>':
+          return '&gt;';
+        case '"':
+          return '&quot;';
+        case "'":
+          return '&#39;';
+        default:
+          return match;
       }
     });
   }
@@ -43,7 +49,12 @@ export class EmailService {
     });
   }
 
-  async sendEventRegistrationEmail(email: string, name: string, eventTitle: string, eventDate: string) {
+  async sendEventRegistrationEmail(
+    email: string,
+    name: string,
+    eventTitle: string,
+    eventDate: string,
+  ) {
     const escapedName = this.escapeHtml(name);
     const escapedEventTitle = this.escapeHtml(eventTitle);
     const escapedEventDate = this.escapeHtml(eventDate);

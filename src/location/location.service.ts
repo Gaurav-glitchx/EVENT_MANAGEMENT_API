@@ -5,9 +5,7 @@ import { Location } from './schemas/location.schema';
 
 @Injectable()
 export class LocationService {
-  constructor(
-    @InjectModel(Location.name) private readonly locationModel: Model<Location>,
-  ) {}
+  constructor(@InjectModel(Location.name) private readonly locationModel: Model<Location>) {}
 
   async create(locationData: Partial<Location>): Promise<Location> {
     const location = new this.locationModel(locationData);
@@ -27,7 +25,9 @@ export class LocationService {
   }
 
   async update(id: string, locationData: Partial<Location>): Promise<Location> {
-    const location = await this.locationModel.findByIdAndUpdate(id, locationData, { new: true }).exec();
+    const location = await this.locationModel
+      .findByIdAndUpdate(id, locationData, { new: true })
+      .exec();
     if (!location) {
       throw new NotFoundException('Location not found');
     }
@@ -41,4 +41,4 @@ export class LocationService {
     }
     return location;
   }
-} 
+}

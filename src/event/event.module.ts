@@ -12,10 +12,10 @@ import { EmailModule } from '../email/email.module';
     MongooseModule.forFeature([{ name: Event.name, schema: EventSchema }]),
     UserModule,
     LocationModule,
-    EmailModule
+    EmailModule,
   ],
   controllers: [EventController],
   providers: [EventService],
   exports: [EventService],
 })
-export class EventModule {} 
+export class EventModule {}

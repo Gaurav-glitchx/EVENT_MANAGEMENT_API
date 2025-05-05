@@ -30,7 +30,10 @@ export class LocationController {
         country: { type: 'string', example: 'USA' },
         zipCode: { type: 'string', example: '10001' },
         capacity: { type: 'number', example: 500 },
-        description: { type: 'string', example: 'Modern conference center with state-of-the-art facilities' },
+        description: {
+          type: 'string',
+          example: 'Modern conference center with state-of-the-art facilities',
+        },
       },
     },
   })
@@ -58,7 +61,10 @@ export class LocationController {
   @ApiOperation({ summary: 'Update location by ID' })
   @ApiResponse({ status: 200, description: 'Location updated successfully' })
   @ApiResponse({ status: 404, description: 'Location not found' })
-  async update(@Param('id') id: string, @Body() locationData: Partial<Location>): Promise<Location> {
+  async update(
+    @Param('id') id: string,
+    @Body() locationData: Partial<Location>,
+  ): Promise<Location> {
     return this.locationService.update(id, locationData);
   }
 
@@ -70,4 +76,4 @@ export class LocationController {
   async delete(@Param('id') id: string): Promise<Location> {
     return this.locationService.delete(id);
   }
-} 
+}

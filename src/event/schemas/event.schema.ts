@@ -28,11 +28,11 @@ export class Event extends Document {
 
   @ApiProperty({ description: 'Event attendees', type: [User] })
   @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
-  attendees: User[];
+  attendees: User[] | string[];
 
   @ApiProperty({ description: 'Event organizer', type: User })
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-  organizer: User;
+  organizer: User | string;
 
   @ApiProperty({ required: true, minimum: 1 })
   @Prop({ required: true, min: 1 })
@@ -43,12 +43,9 @@ export class Event extends Document {
   isActive: boolean;
 }
 
-export const EventSchema = SchemaFactory.createForClass(Event); 
-
-
+export const EventSchema = SchemaFactory.createForClass(Event);
 
 export type EventInput = Omit<Event, keyof Document> & {
   location: string;
-  organizer: string;
   attendees?: string[];
 };

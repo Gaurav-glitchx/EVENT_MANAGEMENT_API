@@ -17,7 +17,7 @@ export class UserController {
   @Post()
   @Roles(UserRole.ADMIN)
   @ApiOperation({ summary: 'Create a new user' })
-  @ApiResponse({ status: 201, description: 'User created successfully', type: User})
+  @ApiResponse({ status: 201, description: 'User created successfully', type: User })
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiBody({ type: User })
   async create(@Body() userData: User): Promise<User> {
@@ -47,7 +47,7 @@ export class UserController {
   @ApiResponse({ status: 200, description: 'User updated successfully', type: User })
   @ApiResponse({ status: 404, description: 'User not found' })
   @ApiBody({ type: UpdateUser })
-  async update(@Param('id') id: string,@Body() userData: UpdateUser,): Promise<User | null> {
+  async update(@Param('id') id: string, @Body() userData: UpdateUser): Promise<User | null> {
     return this.userService.update(id, userData);
   }
 
@@ -59,4 +59,4 @@ export class UserController {
   async delete(@Param('id') id: string): Promise<User | null> {
     return this.userService.delete(id);
   }
-} 
+}

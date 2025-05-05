@@ -7,6 +7,14 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { UserRole } from '../user/schemas/user.schema';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { UpdateEventDto } from './dto/update.dto';
+import { Request } from 'express';
+
+interface RequestWithUser extends Request {
+  user: {
+    userId: string;
+    [key: string]: unknown;
+  };
+}
 
 @ApiTags('Events')
 @ApiBearerAuth()
@@ -33,7 +41,7 @@ export class EventController {
       },
     },
   })
-  async create(@Body() eventData: EventInput, @Req() req: any): Promise<Event> {
+  async create(@Body() eventData: EventInput, @Req() req: RequestWithUser): Promise<Event> {
     return this.eventService.create({ ...eventData, organizer: req.user.userId });
   }
 
@@ -41,7 +49,9 @@ export class EventController {
   @ApiOperation({ summary: 'Get all events' })
   @ApiResponse({ status: 200, description: 'Return all events' })
   async findAll(): Promise<Event[]> {
-    return this.eventService.findAll();
+    const allEvent = this.eventService.findAll();
+    // console.log(allEvent)
+    return allEvent;
   }
 
   @Get(':id')
@@ -57,10 +67,7 @@ export class EventController {
   @ApiOperation({ summary: 'Update event by ID' })
   @ApiResponse({ status: 200, description: 'Event updated successfully' })
   @ApiResponse({ status: 404, description: 'Event not found' })
-  async update(
-    @Param('id') id: string,
-    @Body() eventData: UpdateEventDto,
-  ): Promise<Event> {
+  async update(@Param('id') id: string, @Body() eventData: UpdateEventDto): Promise<Event> {
     return this.eventService.update(id, eventData);
   }
 
@@ -78,7 +85,7 @@ export class EventController {
   @ApiResponse({ status: 200, description: 'Registration successful' })
   @ApiResponse({ status: 404, description: 'Event not found' })
   @ApiResponse({ status: 400, description: 'Event is full or user already registered' })
-  async registerAttendee(@Param('id') id: string, @Req() req: any): Promise<Event> {
+  async registerAttendee(@Param('id') id: string, @Req() req: RequestWithUser): Promise<Event> {
     return this.eventService.registerAttendee(id, req.user.userId);
   }
 
@@ -86,7 +93,7 @@ export class EventController {
   @ApiOperation({ summary: 'Get event attendees' })
   @ApiResponse({ status: 200, description: 'Return list of attendees' })
   @ApiResponse({ status: 404, description: 'Event not found' })
-  async getAttendees(@Param('id') id: string): Promise<any[]> {
+  async getAttendees(@Param('id') id: string): Promise<unknown[]> {
     return this.eventService.getAttendees(id);
   }
-} 
+}

@@ -1,6 +1,8 @@
 import { Controller, Post, Body, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
+import { CreateUserDto } from './dto/create-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -18,11 +20,11 @@ export class AuthController {
         name: { type: 'string', example: 'John Doe' },
         email: { type: 'string', example: 'john@example.com' },
         password: { type: 'string', example: 'password123' },
-        role: { type: 'string', enum: ['attendee', 'event_manager','admin'], example: 'attendee' },
+        role: { type: 'string', enum: ['attendee', 'event_manager', 'admin'], example: 'attendee' },
       },
     },
   })
-  async register(@Body() userData: any) {
+  async register(@Body() userData: CreateUserDto) {
     return this.authService.register(userData);
   }
 
@@ -39,11 +41,11 @@ export class AuthController {
       },
     },
   })
-  async login(@Body() credentials: { email: string; password: string }) {
-    const user = await this.authService.validateUser(credentials.email, credentials.password);
+  async login(@Body() credentials: LoginUserDto) {
+    const user = await this.authService.validateUser(credentials);
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
     return this.authService.login(user);
   }
-} 
+}

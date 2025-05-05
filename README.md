@@ -29,6 +29,8 @@ A comprehensive event management system built with NestJS featuring multi-role a
 
 ## Technologies
 
+- **Node.js** v18.x or higher
+- **NPM** v9.x or higher
 - **Backend Framework**: NestJS
 - **Database**: MongoDB (Mongoose)
 - **Cache**: Redis
@@ -36,44 +38,75 @@ A comprehensive event management system built with NestJS featuring multi-role a
 - **Authentication**: JWT, Passport
 - **Tools**: Swagger, class-validator
 
-## Installation
+## Screenshots
 
-# Clone repository
-git clone https://github.com/yourusername/event-management-api.git
-cd event-management-api
+### 1. Swagger API Documentation
 
-# Install dependencies
-npm install
+![Screenshot from 2025-04-30 15-19-33](https://github.com/user-attachments/assets/084c977a-8343-46ad-abda-4b410d81bb36)
+![Screenshot from 2025-04-30 15-17-00](https://github.com/user-attachments/assets/6084789f-7a09-4b8c-b650-510cf08c55de)
+_Interactive API documentation with testing capabilities_
 
-# Set up environment
-cp .env.example .env
+### 2. Authentication Flow
 
-Configuration
+![Screenshot from 2025-04-30 15-21-44](https://github.com/user-attachments/assets/2fc629ed-4dd8-4ba7-8ccf-ce4fe38d9b10)
+_User registration and JWT token generation process_
+
+### 3. Email Notification Example
+
+![Screenshot_20250430_152311_Gmail](https://github.com/user-attachments/assets/099d1569-da19-44fe-9b3a-55424ec5fda2)
+_Sample event registration confirmation email_
+
+### 4. SonarQube Report
+
+![Screenshot from 2025-04-30 15-34-28](https://github.com/user-attachments/assets/0efe45ba-9921-4c34-a7af-37cf38abcd68)
+_Static code analysis and test coverage report_
+
+# Installation
+
+### Clone repository
+
+- https://github.com/Gaurav-glitchx/EVENT_MANAGEMENT_API.git
+- cd event-management-api
+
+### Install dependencies
+
+- npm install
+
+### Set up environment
+
+- cp .env.example .env
+
+## Configuration
+
+```
 Update .env file with your credentials:
 
-ini
-# Application
 PORT=3000
 NODE_ENV=development
 
-# Database
+// Database
 MONGODB_URI=mongodb://localhost:27017/event-management
 
-# Authentication
+// Authentication
 JWT_SECRET=your_jwt_secret_here
 JWT_EXPIRATION=1h
 
-# Redis
+// Redis
 REDIS_HOST=localhost
 REDIS_PORT=6379
 
-# Email (Mailtrap example)
+// Email (Mailtrap example)
 MAIL_HOST=smtp.mailtrap.io
 MAIL_PORT=2525
 MAIL_USER=your_mailtrap_user
 MAIL_PASS=your_mailtrap_pass
 MAIL_FROM=noreply@eventapp.com
-API Endpoints
+
+```
+
+## API Endpoints
+
+```
 Method	Endpoint	Description	Access
 POST	/api/auth/register	User registration	Public
 POST	/api/auth/login	User login	Public
@@ -82,23 +115,21 @@ POST	/api/events	Create new event	Event Manager+
 PUT	/api/events/{id}	Update event	Event Manager+
 POST	/api/events/{id}/register	Register for event	Attendee+
 GET	/api/users	List all users	Admin
+```
+
 Full API Documentation: http://localhost:3000/api/docs
 
-Running the Application
+# Running the Application
+
 bash
-# Development mode
-npm run start:dev
 
-# Production build
-npm run build
-npm run start:prod
+### Development mode
 
-# Testing
-npm run test          # Unit tests
-npm run test:e2e      # End-to-end tests
-npm run test:cov      # Test coverage
-Project Structure
-tree
+- npm run start:dev
+
+# Project Structure
+
+```
 src/
 ├── auth/
 │   ├── strategies/       # Authentication strategies
@@ -119,40 +150,5 @@ src/
 │   ├── interfaces/       # Type definitions
 │   └── middleware/       # Request logging
 └── main.ts               # Application entry
-Code Examples
-Role-based Access Control:
 
-typescript
-// roles.decorator.ts
-export const Roles = (...roles: Role[]) => SetMetadata('roles', roles);
-
-// roles.guard.ts
-@Injectable()
-export class RolesGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
-
-  canActivate(context: ExecutionContext): boolean {
-    const requiredRoles = this.reflector.get<Role[]>(
-      'roles',
-      context.getHandler()
-    );
-    // Authorization logic
-  }
-}
-Event Registration Email:
-
-typescript
-async sendRegistrationEmail(user: User, event: Event) {
-  await this.mailerService.sendMail({
-    to: user.email,
-    subject: 'Event Registration Confirmation',
-    template: 'event-registration',
-    context: {
-      name: user.name,
-      event: event.title,
-      date: event.date.toLocaleDateString()
-    }
-  });
-}
-# License
-This project is licensed under the MIT License.
+```

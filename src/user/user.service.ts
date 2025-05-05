@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { User } from './schemas/user.schema';
 import * as bcrypt from 'bcrypt';
 import { EmailService } from '../email/email.service';
+import { CreateUserDto } from 'src/auth/dto/create-user.dto';
 
 @Injectable()
 export class UserService {
@@ -12,22 +13,22 @@ export class UserService {
     private readonly emailService: EmailService,
   ) {}
 
-  async create(userData: Partial<User>): Promise<User> {
+  async create(userData: CreateUserDto): Promise<User> {
     if (!userData.password) {
       throw new Error('Password is required');
     }
     const hashedPassword = await bcrypt.hash(userData.password, 10);
-    const user = new this.userModel({
-      ...userData,
-      password: hashedPassword,
-    });
-    await user.save();
-    
-    await this.emailService.sendUserRegistrationEmail(
-      user.email,
-      user.name,
+    const user = new this.userModel(
+      {
+        ...userData,
+        password: hashedPassword,
+      },
+      { projection: { password: 0 } },
     );
-    
+    await user.save();
+
+    await this.emailService.sendUserRegistrationEmail(user.email, user.name);
+
     return user;
   }
 
@@ -53,5 +54,4 @@ export class UserService {
   async delete(id: string): Promise<User | null> {
     return this.userModel.findByIdAndDelete(id).exec();
   }
-
-} 
+}
