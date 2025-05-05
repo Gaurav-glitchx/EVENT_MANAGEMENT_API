@@ -50,7 +50,6 @@ export class EventController {
   @ApiResponse({ status: 200, description: 'Return all events' })
   async findAll(): Promise<Event[]> {
     const allEvent = this.eventService.findAll();
-    // console.log(allEvent)
     return allEvent;
   }
 
